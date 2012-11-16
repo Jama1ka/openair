@@ -14,10 +14,25 @@ class OpenAir::Client
     post_query(time_doc)
   end
 
+  def whoami
+    post_query(whoami_doc)
+  end
+
   private
 
   def post_query(query_doc)
     Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
+  end
+
+  def whoami_doc
+    Nokogiri::XML::Builder.new do |xml|
+      xml.request(request_options) do
+        xml.Auth do
+          xml.parent << login_fragment.elements
+        end
+        xml.Whoami
+      end
+    end.doc
   end
 
   def time_doc

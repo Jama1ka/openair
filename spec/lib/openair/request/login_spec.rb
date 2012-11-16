@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe OpenAir::Doc::Auth do
+describe OpenAir::Request::Login do
   let(:company_id) { "Abc" }
   let(:username) { "alice" }
   let(:password) { "password" }
@@ -13,7 +13,7 @@ describe OpenAir::Doc::Auth do
   end
 
   describe "#login" do
-    subject { OpenAir::Doc::Auth.login(options) }
+    subject { OpenAir::Request::Login.login(options) }
 
     it "builds a login doc" do
       subject.css("Login").tap do |login_doc|

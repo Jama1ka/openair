@@ -1,4 +1,4 @@
-class OpenAir::Doc::Auth
+class OpenAir::Request::Login
   class << self
     def login(options)
       Nokogiri::XML::Builder.new do |xml|

@@ -51,7 +51,7 @@ class OpenAir::Client
 
 
   def login_elements
-    login_doc = OpenAir::Doc::Auth.login(company_id: @company_id, username: @username, password: @password)
+    login_doc = OpenAir::Request::Login.login(company_id: @company_id, username: @username, password: @password)
     login_doc.elements
   end
 

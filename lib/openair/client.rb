@@ -11,7 +11,7 @@ class OpenAir::Client
   end
 
   def time
-    post_request(time_doc)
+    post_request OpenAir::Request::Utility.time_request(request_options)
   end
 
   def whoami
@@ -33,14 +33,6 @@ class OpenAir::Client
       xml.request(request_options) do
         xml.Auth { xml.parent << login_elements }
         xml.Whoami
-      end
-    end.doc
-  end
-
-  def time_doc
-    Nokogiri::XML::Builder.new do |xml|
-      xml.request(request_options) do
-        xml.Time
       end
     end.doc
   end

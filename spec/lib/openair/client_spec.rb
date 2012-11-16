@@ -15,6 +15,8 @@ describe OpenAir::Client do
       password: password
     }
   end
+  let(:request) { double(to_xml: "<xml/>") }
+  let(:headers) { {"Content-Type" => "text/xml; charset=utf-8"} }
 
   describe "#initialize" do
     it "requires an API key, company ID, username and password" do
@@ -28,14 +30,12 @@ describe OpenAir::Client do
   describe "#login" do
     subject { OpenAir::Client.new(options).login }
 
-    let(:request) { double(to_xml: "<xml/>") }
-
     it "posts a login request" do
       OpenAir::Request::Login.should_receive(:request).and_return(request)
 
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
-        options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
+        options[:headers].should == headers
         options[:body].should == "<xml/>"
       end
 
@@ -46,14 +46,13 @@ describe OpenAir::Client do
   describe "#time" do
     subject { OpenAir::Client.new(options).time }
 
-    it "builds a time request" do
+    it "posts a time request" do
+      OpenAir::Request::Utility.should_receive(:time_request).and_return(request)
+
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
-        options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
-
-        body_doc = Nokogiri::XML(options[:body])
-        body_doc.should have_request_with_headers
-        body_doc.css("request > Time").should be_one
+        options[:headers].should == headers
+        options[:body].should == "<xml/>"
       end
 
       subject
@@ -66,7 +65,7 @@ describe OpenAir::Client do
     it "builds a whoami request" do
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
-        options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
+        options[:headers].should == headers
 
         body_doc = Nokogiri::XML(options[:body])
         body_doc.should have_request_with_headers

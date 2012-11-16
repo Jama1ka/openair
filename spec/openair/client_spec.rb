@@ -49,7 +49,7 @@ describe OpenAir::Client do
   describe "#time" do
     subject { OpenAir::Client.new(options).time }
 
-    it "builds a login request" do
+    it "builds a time request" do
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
         options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
@@ -63,4 +63,5 @@ describe OpenAir::Client do
       subject
     end
   end
+
 end

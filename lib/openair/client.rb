@@ -7,24 +7,28 @@ class OpenAir::Client
   end
 
   def login
-    Typhoeus::Request.post(@api_url, :body => login_xml, headers: headers)
+    post_query(login_doc)
   end
 
   def time
-    Typhoeus::Request.post(@api_url, :body => time_xml, headers: headers)
+    post_query(time_doc)
   end
 
   private
 
-  def time_xml
+  def post_query(query_doc)
+    Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
+  end
+
+  def time_doc
     Nokogiri::XML::Builder.new do |xml|
       xml.request(request_options) do
         xml.Time
       end
-    end.to_xml
+    end
   end
 
-  def login_xml
+  def login_doc
     Nokogiri::XML::Builder.new do |xml|
       xml.request(request_options) do
         xml.RemoteAuth do
@@ -35,7 +39,7 @@ class OpenAir::Client
           end
         end
       end
-    end.to_xml
+    end
   end
 
   def request_options

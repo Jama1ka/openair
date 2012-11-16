@@ -25,21 +25,27 @@ class OpenAir::Client
       xml.request(request_options) do
         xml.Time
       end
-    end
+    end.doc
+  end
+
+  def login_fragment
+    Nokogiri::XML::Builder.new do |xml|
+      xml.Login do
+        xml.company(@company_id)
+        xml.user(@username)
+        xml.password(@password)
+      end
+    end.doc
   end
 
   def login_doc
     Nokogiri::XML::Builder.new do |xml|
       xml.request(request_options) do
         xml.RemoteAuth do
-          xml.Login do
-            xml.company(@company_id)
-            xml.user(@username)
-            xml.password(@password)
-          end
+          xml.parent << login_fragment.elements
         end
       end
-    end
+    end.doc
   end
 
   def request_options

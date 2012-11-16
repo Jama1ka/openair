@@ -15,7 +15,7 @@ class OpenAir::Client
   end
 
   def whoami
-    post_request(whoami_doc)
+    post_request OpenAir::Request::Utility.whoami_request(request_options, auth_options)
   end
 
   def timesheets
@@ -26,15 +26,6 @@ class OpenAir::Client
 
   def post_request(query_doc)
     Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
-  end
-
-  def whoami_doc
-    Nokogiri::XML::Builder.new do |xml|
-      xml.request(request_options) do
-        xml.Auth { xml.parent << login_elements }
-        xml.Whoami
-      end
-    end.doc
   end
 
   def timesheets_doc
@@ -56,10 +47,6 @@ class OpenAir::Client
         end
       end
     end
-  end
-
-  def login_elements
-    OpenAir::Request::Login.elements(auth_options)
   end
 
   def auth_options

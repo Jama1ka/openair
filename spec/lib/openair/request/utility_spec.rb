@@ -30,4 +30,14 @@ describe OpenAir::Request::Login do
       subject.css("request > Time").should be_one
     end
   end
+
+  describe "#whoami_request" do
+    subject { OpenAir::Request::Utility.whoami_request(request_options, auth_options) }
+
+    it "builds a whoami request" do
+      subject.should have_request_with_headers
+      subject.should have_request_login
+      subject.css("request > Whoami").should be_one
+    end
+  end
 end

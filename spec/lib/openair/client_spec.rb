@@ -63,14 +63,12 @@ describe OpenAir::Client do
     subject { OpenAir::Client.new(options).whoami }
 
     it "builds a whoami request" do
+      OpenAir::Request::Utility.should_receive(:whoami_request).and_return(request)
+
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
         options[:headers].should == headers
-
-        body_doc = Nokogiri::XML(options[:body])
-        body_doc.should have_request_with_headers
-        body_doc.should have_request_login
-        body_doc.css("request > Whoami").should be_one
+        options[:body].should == "<xml/>"
       end
 
       subject

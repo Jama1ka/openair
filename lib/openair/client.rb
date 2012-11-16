@@ -27,9 +27,7 @@ class OpenAir::Client
   def whoami_doc
     Nokogiri::XML::Builder.new do |xml|
       xml.request(request_options) do
-        xml.Auth do
-          xml.parent << login_fragment.elements
-        end
+        xml.Auth { xml.parent << login_elements }
         xml.Whoami
       end
     end.doc
@@ -43,24 +41,18 @@ class OpenAir::Client
     end.doc
   end
 
-  def login_fragment
+  def login_doc
     Nokogiri::XML::Builder.new do |xml|
-      xml.Login do
-        xml.company(@company_id)
-        xml.user(@username)
-        xml.password(@password)
+      xml.request(request_options) do
+        xml.RemoteAuth { xml.parent << login_elements }
       end
     end.doc
   end
 
-  def login_doc
-    Nokogiri::XML::Builder.new do |xml|
-      xml.request(request_options) do
-        xml.RemoteAuth do
-          xml.parent << login_fragment.elements
-        end
-      end
-    end.doc
+
+  def login_elements
+    login_doc = OpenAir::Doc::Auth.login(company_id: @company_id, username: @username, password: @password)
+    login_doc.elements
   end
 
   def request_options

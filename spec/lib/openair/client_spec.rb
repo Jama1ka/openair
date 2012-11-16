@@ -35,11 +35,7 @@ describe OpenAir::Client do
 
         body_doc = Nokogiri::XML(options[:body])
         body_doc.should have_request_with_headers
-        body_doc.css("request > RemoteAuth > Login").tap do |login_doc|
-          login_doc.css("company").text.should == company_id
-          login_doc.css("user").text.should == username
-          login_doc.css("password").text.should == password
-        end
+        body_doc.css("request > RemoteAuth > Login").should be_one
       end
 
       subject

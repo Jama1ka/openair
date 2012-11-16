@@ -12,14 +12,10 @@ end
 
 RSpec::Matchers.define :have_request_login do
   match do |body_doc|
-    body_doc.css("request > Auth:first-child > Login").tap do |auth_doc|
-      auth_doc.css("company").text.should == company_id
-      auth_doc.css("user").text.should == username
-      auth_doc.css("password").text.should == password
-    end
+    body_doc.css("request > Auth:first-child > Login").should be_one
   end
 
-    failure_message_for_should do |body_doc|
-      "expected: \n#{body_doc.to_xml}\n to include auth"
-    end
+  failure_message_for_should do |body_doc|
+    "expected: \n#{body_doc.to_xml}\n to include auth"
+  end
 end

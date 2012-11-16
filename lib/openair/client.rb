@@ -10,7 +10,19 @@ class OpenAir::Client
     Typhoeus::Request.post(@api_url, :body => login_xml, headers: headers)
   end
 
+  def time
+    Typhoeus::Request.post(@api_url, :body => time_xml, headers: headers)
+  end
+
   private
+
+  def time_xml
+    Nokogiri::XML::Builder.new do |xml|
+      xml.request(request_options) do
+        xml.Time
+      end
+    end.to_xml
+  end
 
   def login_xml
     Nokogiri::XML::Builder.new do |xml|

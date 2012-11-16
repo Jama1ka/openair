@@ -31,23 +31,33 @@ describe OpenAir::Client do
     it "builds a login request" do
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
+        options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
 
         body_doc = Nokogiri::XML(options[:body])
-        body_doc.css("request") do |request|
-          request.attr("API_version").value.should == "1.0"
-          request.attr("client").value.should == "test app"
-          request.attr("client_ver").value.should == "1.1"
-          request.attr("namespace").value.should == "default"
-          request.attr("key").value.should == api_key.to_s
-
-          request.css("RemoteAuth > Login") do |login|
-            login.css("company").text.should == company_id
-            login.css("user").text.should == username
-            login.css("password").text.should == password
-          end
+        body_doc.should have_request_with_headers
+        body_doc.css("request > RemoteAuth > Login").tap do |login_doc|
+          login_doc.css("company").text.should == company_id
+          login_doc.css("user").text.should == username
+          login_doc.css("password").text.should == password
         end
+      end
 
+      subject
+    end
+  end
+
+  describe "#time" do
+    subject { OpenAir::Client.new(options).time }
+
+    it "builds a login request" do
+      Typhoeus::Request.should_receive(:post) do |url, options|
+        url.should == api_url
         options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
+
+        body_doc = Nokogiri::XML(options[:body])
+        body_doc.should have_request_with_headers
+        body_doc.css("request > Time").should be_one
+
       end
 
       subject

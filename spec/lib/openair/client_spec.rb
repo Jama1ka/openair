@@ -28,14 +28,15 @@ describe OpenAir::Client do
   describe "#login" do
     subject { OpenAir::Client.new(options).login }
 
-    it "builds a login request" do
+    let(:request) { double(to_xml: "<xml/>") }
+
+    it "posts a login request" do
+      OpenAir::Request::Login.should_receive(:request).and_return(request)
+
       Typhoeus::Request.should_receive(:post) do |url, options|
         url.should == api_url
         options[:headers].should == {"Content-Type" => "text/xml; charset=utf-8"}
-
-        body_doc = Nokogiri::XML(options[:body])
-        body_doc.should have_request_with_headers
-        body_doc.css("request > RemoteAuth > Login").should be_one
+        options[:body].should == "<xml/>"
       end
 
       subject

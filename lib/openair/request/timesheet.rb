@@ -8,7 +8,7 @@ module OpenAir::Request
           xml.request(request_options) do
             xml.Auth { xml.parent << login_elements }
 
-            xml.Read(type: "Timesheet", filter: "newer-than,older-than", field: "starts,starts", method: "all", limit: "1") do
+            xml.Read(type: "Timesheet", filter: "newer-than,older-than", field: "starts,starts", method: "all", limit: DEFAULT_LIMIT) do
               xml.Date do
                 xml.year "2012"
                 xml.month "10"

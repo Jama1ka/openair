@@ -8,7 +8,7 @@ module OpenAir::Request
           xml.request(request_options) do
             xml.Auth { xml.parent << login_elements }
 
-            xml.Read(type: "User", method: "all", limit: "300")
+            xml.Read(type: "User", method: "all", limit: DEFAULT_LIMIT)
           end
         end.doc
       end

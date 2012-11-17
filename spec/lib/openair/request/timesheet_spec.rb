@@ -28,7 +28,7 @@ describe OpenAir::Request::Timesheet do
     it "builds a timesheet read request" do
       subject.should have_request_with_headers_with_key(api_key)
       subject.should have_request_login
-      subject.css("request > Read[type='Timesheet'][method][filter][field]").should be_one
+      subject.css("request > Read[type='Timesheet'][filter][field][method][limit]").should be_one
     end
   end
 end

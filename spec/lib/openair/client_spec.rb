@@ -91,4 +91,20 @@ describe OpenAir::Client do
     end
   end
 
+  describe "#users" do
+    subject { OpenAir::Client.new(options).users }
+
+    it "builds a whoami request" do
+      OpenAir::Request::User.should_receive(:request).and_return(request)
+
+      Typhoeus::Request.should_receive(:post) do |url, options|
+        url.should == api_url
+        options[:headers].should == headers
+        options[:body].should == "<xml/>"
+      end
+
+      subject
+    end
+  end
+
 end

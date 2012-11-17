@@ -23,6 +23,10 @@ module OpenAir
       post_request Request::Timesheet.request(request_options, auth_options)
     end
 
+    def users
+      post_request Request::User.request(request_options, auth_options)
+    end
+
     private
 
     def post_request(query_doc)

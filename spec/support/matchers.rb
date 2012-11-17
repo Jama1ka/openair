@@ -1,4 +1,4 @@
-RSpec::Matchers.define :have_request_with_headers do
+RSpec::Matchers.define :have_request_with_headers_with_key do |api_key|
   match do |body_doc|
     body_doc.css("request").tap do |request_doc|
       request_doc.attr("API_version").value == "1.0" &&

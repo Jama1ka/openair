@@ -20,34 +20,13 @@ module OpenAir
     end
 
     def timesheets
-      post_request(timesheets_doc)
+      post_request Request::Timesheet.request(request_options, auth_options)
     end
 
     private
 
     def post_request(query_doc)
       Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
-    end
-
-    def timesheets_doc
-      Nokogiri::XML::Builder.new do |xml|
-        xml.request(request_options) do
-          xml.Auth { xml.parent << login_elements }
-
-          xml.Read(type: "Timesheet", filter: "newer-than,older-than", field: "starts,starts", method: "all", limit: "1") do
-            xml.Date do
-              xml.year "2012"
-              xml.month "10"
-              xml.day "01"
-            end
-            xml.Date do
-              xml.year "2012"
-              xml.month "11"
-              xml.day "01"
-            end
-          end
-        end
-      end
     end
 
     def auth_options

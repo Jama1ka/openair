@@ -38,7 +38,7 @@ describe OpenAir::Request::Login do
     subject { OpenAir::Request::Login.request(request_options, auth_options) }
 
     it "builds a login request" do
-      subject.should have_request_with_headers
+      subject.should have_request_with_headers_with_key(api_key)
       subject.css("request > RemoteAuth > Login").should be_one
     end
   end

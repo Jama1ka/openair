@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe OpenAir::Request::Login do
+describe OpenAir::Request::Timesheet do
   let(:company_id) { "Abc" }
   let(:username) { "alice" }
   let(:password) { "password" }
@@ -22,22 +22,13 @@ describe OpenAir::Request::Login do
     }
   end
 
-  describe "#time_request" do
-    subject { OpenAir::Request::Utility.time_request(request_options) }
+  describe "#request" do
+    subject { OpenAir::Request::Timesheet.request(request_options, auth_options) }
 
-    it "builds a time request" do
-      subject.should have_request_with_headers_with_key(api_key)
-      subject.css("request > Time").should be_one
-    end
-  end
-
-  describe "#whoami_request" do
-    subject { OpenAir::Request::Utility.whoami_request(request_options, auth_options) }
-
-    it "builds a whoami request" do
+    it "builds a timesheet read request" do
       subject.should have_request_with_headers_with_key(api_key)
       subject.should have_request_login
-      subject.css("request > Whoami").should be_one
+      subject.css("request > Read[type='Timesheet'][method][filter][field]").should be_one
     end
   end
 end

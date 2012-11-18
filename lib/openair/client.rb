@@ -19,8 +19,8 @@ module OpenAir
       post_request Request::Utility.whoami_request(request_options, auth_options)
     end
 
-    def timesheets
-      post_request Request::Timesheet.request(request_options, auth_options)
+    def timesheets(query_options = {})
+      post_request Request::Timesheet.request(request_options, auth_options, query_options)
     end
 
     def users

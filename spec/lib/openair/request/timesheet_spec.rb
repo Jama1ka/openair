@@ -23,12 +23,27 @@ describe OpenAir::Request::Timesheet do
   end
 
   describe "#request" do
-    subject { OpenAir::Request::Timesheet.request(request_options, auth_options) }
+    subject { OpenAir::Request::Timesheet.request(request_options, auth_options, query_options) }
 
-    it "builds a timesheet read request" do
-      subject.should have_request_with_headers_with_key(api_key)
-      subject.should have_request_login
-      subject.css("request > Read[type='Timesheet'][filter][field][method][limit]").should be_one
+    context "without options" do
+      let(:query_options) { {} }
+
+      it "builds a timesheet read request" do
+        subject.should have_request_with_headers_with_key(api_key)
+        subject.should have_request_login
+        subject.css("request > Read[type='Timesheet'][method='all'][limit]").should be_one
+      end
+    end
+
+    context "with query options to filter users" do
+      let(:query_options) { {users: [111, 999]} }
+
+      it "builds a timesheet read request with user filter" do
+        subject.should have_request_with_headers_with_key(api_key)
+        subject.should have_request_login
+        subject.css("request > Read[type='Timesheet'][method='user'][limit]").should be_one
+        subject.css("request > Read > User > id").size.should == 2
+      end
     end
   end
 end

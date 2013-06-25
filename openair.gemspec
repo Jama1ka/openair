@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.summary = "An OpenAir client for Ruby"
 
   s.add_runtime_dependency("typhoeus", [">= 0.4.2"])
-  s.add_runtime_dependency("nokogiri", [">= 1.5.5"])
+  s.add_runtime_dependency("nokogiri", [">= 1.5.0"])
   s.add_runtime_dependency("nori", [">= 2.1.0"])
 
   s.add_development_dependency("rspec", [">= 2.8.0"])

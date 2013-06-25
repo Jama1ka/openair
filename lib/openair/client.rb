@@ -27,10 +27,17 @@ module OpenAir
       post_request Request::User.request(request_options, auth_options)
     end
 
+    def find_user_by_netsuite_id(netsuite_id)
+      request = Request::User.find_by_netsuite_id(request_options, auth_options, netsuite_id)
+      post_request(request)["response"]["Read"]["User"]
+    end
+
     private
 
     def post_request(query_doc)
-      Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
+      parser = Nori.new
+      response = Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
+      parser.parse(response.body)
     end
 
     def auth_options
@@ -44,15 +51,15 @@ module OpenAir
     def request_options
       {
         "API_version" => "1.0",
-        "client" => "test app",
-        "client_ver" => "1.1",
+        "client" => "Skynet",
+        "client_ver" => "1.0",
         "namespace" => "default",
         "key" => @api_key
       }
     end
 
     def headers
-      {"Content-Type" => "text/xml; charset=utf-8"}
+      {"Content-Type" => "text/xml; charset=utf-8; standalone='yes'"}
     end
   end
 end

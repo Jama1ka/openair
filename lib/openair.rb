@@ -1,6 +1,7 @@
 require "rubygems"
 require "typhoeus"
 require "nokogiri"
+require "nori"
 
 module OpenAir
 end

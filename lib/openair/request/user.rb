@@ -12,6 +12,41 @@ module OpenAir::Request
           end
         end.doc
       end
+
+      def update(request_options, auth_options, user_id, password)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Modify(type: "User") {
+              xml.User {
+                xml.id user_id
+                xml.password password
+                xml.addr {
+                  xml.Address {
+                    xml.last "Kemp IT1"
+                  }
+                }
+              }
+            }
+          end
+        end.doc
+      end
+
+      def find_by_netsuite_id(request_options, auth_options, netsuite_id)
+        login_elements = Login.elements(auth_options)
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Read(type: "User", enable_custom: "1", method: "equal to", limit: "1") {
+              xml.User {
+                xml.netsuite_user_id__c netsuite_id
+              }
+            }
+          end
+        end.doc
+      end
     end
   end
 end

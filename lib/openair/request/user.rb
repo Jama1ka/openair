@@ -13,7 +13,7 @@ module OpenAir::Request
         end.doc
       end
 
-      def update(request_options, auth_options, user_id, password)
+      def change_password(request_options, auth_options, user_id, password)
         login_elements = Login.elements(auth_options)
 
         Nokogiri::XML::Builder.new do |xml|
@@ -23,11 +23,6 @@ module OpenAir::Request
               xml.User {
                 xml.id user_id
                 xml.password password
-                xml.addr {
-                  xml.Address {
-                    xml.last "Kemp IT1"
-                  }
-                }
               }
             }
           end

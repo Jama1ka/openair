@@ -27,6 +27,19 @@ module OpenAir
       post_request Request::User.request(request_options, auth_options)
     end
 
+    def change_user_password(user_id, password)
+      request = Request::User.change_password(request_options, auth_options, user_id, password)
+      status = post_request(request)["response"]["Modify"]["@status"]
+      case status
+      when "601"
+        raise StandardError, "[OpenAir] Method: ChangePassword Invalid id/code for #{user_id}"
+      when "0"
+        true
+      else
+        puts "You gave me -- I have no idea what to do with that."
+      end
+    end
+
     def find_user_by_netsuite_id(netsuite_id)
       request = Request::User.find_by_netsuite_id(request_options, auth_options, netsuite_id)
       post_request(request)["response"]["Read"]["User"]

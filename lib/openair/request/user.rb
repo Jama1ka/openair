@@ -31,6 +31,7 @@ module OpenAir::Request
 
       def find_by_netsuite_id(request_options, auth_options, netsuite_id)
         login_elements = Login.elements(auth_options)
+
         Nokogiri::XML::Builder.new do |xml|
           xml.request(request_options) do
             xml.Auth { xml.parent << login_elements }

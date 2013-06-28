@@ -1,10 +1,7 @@
 module OpenAir
   class Client
-    def initialize(options)
-      [:api_key, :api_url, :company_id, :username, :password].each do |key|
-        value = options[key] or raise ArgumentError
-        instance_variable_set("@#{key}", value)
-      end
+    def initialize
+      # still needs reword to make a better DSL
     end
 
     def login
@@ -49,15 +46,22 @@ module OpenAir
 
     def post_request(query_doc)
       parser = Nori.new
-      response = Typhoeus::Request.post(@api_url, :body => query_doc.to_xml, headers: headers)
+      response = Typhoeus::Request.post(
+        OpenAir::Configuration.api_url,
+        body:query_doc.to_xml,
+        headers: headers,
+        ssl_verifypeer: false
+      )
       parser.parse(response.body)
     end
 
     def auth_options
       {
-        company_id: @company_id,
-        username: @username,
-        password: @password
+        api_key: OpenAir::Configuration.api_key,
+        api_url: OpenAir::Configuration.api_url,
+        company_id: OpenAir::Configuration.company_id,
+        username: OpenAir::Configuration.username,
+        password: OpenAir::Configuration.password
       }
     end
 
@@ -67,7 +71,7 @@ module OpenAir
         "client" => "Skynet",
         "client_ver" => "1.0",
         "namespace" => "default",
-        "key" => @api_key
+        "key" => OpenAir::Configuration.api_key
       }
     end
 

@@ -1,2 +1,4 @@
 Gemfile.lock
 .rbenv-version
+lib/configuration.rb
+Rakefile

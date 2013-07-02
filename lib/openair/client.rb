@@ -4,8 +4,13 @@ module OpenAir
       # still needs reword to make a better DSL
     end
 
-    def login
-      post_request Request::Login.request(request_options, auth_options)
+    def login(company_id, username, password)
+      options = {
+        company_id: company_id,
+        username: username,
+        password: password
+      }
+      post_request Request::Login.request(request_options, auth_options, options)
     end
 
     def time
@@ -39,7 +44,7 @@ module OpenAir
 
     def find_user_by_netsuite_id(netsuite_id)
       request = Request::User.find_by_netsuite_id(request_options, auth_options, netsuite_id)
-      post_request(request)["response"]["Read"]["User"]
+      post_request(request)
     end
 
     private

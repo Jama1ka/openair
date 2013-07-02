@@ -11,10 +11,10 @@ module OpenAir::Request
         end.doc.elements
       end
 
-      def request(request_options, auth_options)
+      def request(request_options, auth_options, options)
         Nokogiri::XML::Builder.new do |xml|
           xml.request(request_options) do
-            xml.RemoteAuth { xml.parent << elements(auth_options) }
+            xml.RemoteAuth { xml.parent << elements(options) }
           end
         end.doc
       end

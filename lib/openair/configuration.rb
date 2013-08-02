@@ -78,5 +78,18 @@ module OpenAir
       attributes[:password] = password
     end
 
+    def log=(path)
+      attributes[:log] = path
+    end
+
+    def log(path = nil)
+      self.log = path if path
+      attributes[:log]
+    end
+
+    def logger
+      attributes[:logger] ||= ::Logger.new (log && !log.empty?) ? log : $stdout
+    end
+
   end
 end

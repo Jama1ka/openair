@@ -5,7 +5,6 @@ require "nori"
 require 'openair/errors'
 require 'openair/version'
 
-
 module OpenAir
   autoload :Configuration, 'openair/configuration'
   autoload :Client, 'openair/client'

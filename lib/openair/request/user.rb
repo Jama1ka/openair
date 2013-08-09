@@ -36,7 +36,7 @@ module OpenAir::Request
             xml.Auth { xml.parent << login_elements }
             xml.Modify(type: "User", enable_custom: "1") {
               xml.User {
-                has_each(user_data, xml)
+                hash_each(user_data, xml)
               }
             }
           end

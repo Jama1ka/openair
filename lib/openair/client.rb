@@ -42,13 +42,12 @@ module OpenAir
       end
     end
 
-    def modify_user(user_id, user_data)
-      request = Request::User.modify(request_options, auth_options, user_id, user_data)
+    def modify_user(user_data)
+      request = Request::User.modify(request_options, auth_options, user_data)
       response = post_request(request)
       [response["response"]["Modify"]["@status"], response["response"]["Auth"]["@status"]].each do |error_code|
         check_for_errors(
           error_code,
-          __method__,
           user_data.map{|k,v| "#{k}=#{v}"}.join(', ')
         )
       end

@@ -152,8 +152,9 @@ XSL
         error = "AuthError"
         message = "User locked"
       when "601"
-        error = "ReadError"
-        message = "Invalid id/code"
+        # error = "ReadError"
+        # message = "Invalid id/code"
+        true
       when "602"
         error = "ReadError"
         message = "Invalid field for"

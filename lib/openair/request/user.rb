@@ -83,7 +83,7 @@ module OpenAir::Request
               hash_each(value, xml)
             end
           else
-            xml.send(field, value)
+            xml.send(field, CGI.escapeHTML(value.to_s))
           end
         end
       end

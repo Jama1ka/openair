@@ -170,7 +170,8 @@ XSL
       when "0"
         true
       else
-        raise UnknownError, "Method: #{method} We don't know what the hell happened"
+        error = "StandardError"
+        message = "We don't know what the hell happened. Error code: #{error_code}"
       end
 
       if message && error

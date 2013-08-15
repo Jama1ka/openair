@@ -140,51 +140,36 @@ XSL
     def check_for_errors(error_code, identifier)
       case error_code
       when "202"
-        message = "duplicate user nickname"
-        error = "CreateUserError"
+        raise CreateUserError, "duplicate user nickname #{identifier}"
       when "203"
-        error = "CreateUserError"
-        message = "too few arguments"
+        raise CreateUserError, "too few arguments #{identifier}"
       when "401"
-       message = "Auth failed: No such company/user/pass"
-       error = "AuthError"
+       raise AuthError, "Auth failed: No such company/user/pass #{identifier}"
       when "416"
-        error = "AuthError"
-        message = "User locked"
+        raise AuthError, "User locked #{identifier}"
       when "601"
         # error = "ReadError"
         # message = "Invalid id/code"
         true
       when "602"
-        error = "ReadError"
-        message = "Invalid field for"
+        raise ReadError, "Invalid field for #{identifier}"
       when "603"
-        error = "ReadError"
-        message = "Invalid type or method"
+        raise ReadError, "Invalid type or method #{identifier}"
       when "604"
-        error = "ReadError"
-        message = "Invalid type or method"
+        raise ReadError, "Invalid type or method #{identifier}"
       when "605"
-        error = "ReadError"
-        message = "Limit clause must be specified and be less than the account limit for output data"
+        raise ReadError, "Limit clause must be specified and be less than the account limit for output data #{identifier}"
       when "0"
         true
       else
-        error = "StandardError"
-        message = "We don't know what the hell happened. Error code: #{error_code}"
-      end
-
-      if message && error
-        error_message(error, message, identifier)
-      else
-        true
+        raise StandardError, "We don't know what the hell happened. Error code: #{error_code} #{identifier}"
       end
     end
 
-    def error_message(error_type, message, identifier)
-      identifier[:password] = "******" if identifier.has_key?(:password)
-      identifier = identifier.map{|k,v| "#{k}=#{v}"}.join(', ')
-      raise OpenAir::Errors.new(error_type, "#{message} (#{identifier})")
-    end
+    # def error_message(error_type, message, identifier)
+    #   identifier[:password] = "******" if identifier.has_key?(:password)
+    #   identifier = identifier.map{|k,v| "#{k}=#{v}"}.join(', ')
+    #   raise OpenAir::Errors.new(error_type, "#{message} (#{identifier})")
+    # end
   end
 end

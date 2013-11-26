@@ -73,6 +73,25 @@ module OpenAir
       response
     end
 
+    def get_utilization(field_name, value)
+      request = Request::User.get_target_utilization(
+        request_options,
+        auth_options,
+        field_name,
+        value
+      )
+      response = post_request(request)
+      status(response, ["Read", "Auth"], Hash[field_name => value])
+      response
+    end
+
+    def set_utilization(utilization_data)
+      request = Request::User.set_target_utilization(request_options, auth_options, utilization_data)
+      response = post_request(request)
+      status(response, ["CreateTargetUtilization", "Auth"], utilization_data)
+      response
+    end
+
     private
 
     def post_request(query_doc)

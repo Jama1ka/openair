@@ -88,7 +88,7 @@ module OpenAir
     def set_utilization(utilization_data)
       request = Request::User.set_target_utilization(request_options, auth_options, utilization_data)
       response = post_request(request)
-      status(response, ["CreateTargetUtilization", "Auth"], utilization_data)
+      status(response, ["TargetUtilization", "Auth"], utilization_data)
       response
     end
 

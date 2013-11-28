@@ -88,7 +88,29 @@ module OpenAir
     def set_utilization(utilization_data)
       request = Request::User.set_target_utilization(request_options, auth_options, utilization_data)
       response = post_request(request)
-      status(response, ["TargetUtilization", "Auth"], utilization_data)
+      status(response, ["Add", "Auth"], utilization_data)
+      response
+    end
+
+    def update_utilization(utilization_data)
+      request = Request::User.update_target_utilization(
+        request_options,
+        auth_options,
+        utilization_data
+      )
+      response = post_request(request)
+      status(response, ["Modify", "Auth"], utilization_data)
+      response
+    end
+
+    def delete_utilization(id)
+      request = Request::User.delete_target_utilization(
+        request_options,
+        auth_options,
+        id
+      )
+      response = post_request(request)
+      status(response, ["Delete", "Auth"], id)
       response
     end
 

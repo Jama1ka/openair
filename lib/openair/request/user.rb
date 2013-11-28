@@ -95,6 +95,36 @@ module OpenAir::Request
         end.doc
       end
 
+      def update_target_utilization(request_options, auth_options, utilization_data)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Modify(type: "TargetUtilization") {
+              xml.TargetUtilization {
+                hash_each(utilization_data, xml)
+              }
+            }
+          end
+        end.doc
+      end
+
+      def delete_target_utilization(request_options, auth_options, id)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Delete(type: "TargetUtilization") {
+              xml.TargetUtilization {
+                xml.send("id", CGI.escapeHTML(id.to_s))
+              }
+            }
+          end
+        end.doc
+      end
+
       def find(request_options, auth_options, field_name, value)
         login_elements = Login.elements(auth_options)
 

@@ -1,3 +1,5 @@
+require 'cgi'
+
 module OpenAir::Request
   class User
     class << self
@@ -55,6 +57,68 @@ module OpenAir::Request
               }
               xml.User {
                 hash_each(user_data, xml)
+              }
+            }
+          end
+        end.doc
+      end
+
+      def get_target_utilization(request_options, auth_options, field_name, value)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Read(type: "TargetUtilization", enable_custom: "1", method: "equal to", limit: "1000") {
+              xml.TargetUtilization {
+                xml.send(field_name, value)
+              }
+            }
+          end
+        end.doc
+      end
+
+      # util_data = {:user_id=>161, :start_date=> { Date: { month: "11", year: "2013", day: "25"}}, :percentage=>"79.00"}
+
+      def set_target_utilization(request_options, auth_options, utilization_data)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Add(type: "TargetUtilization") {
+              xml.TargetUtilization {
+                hash_each(utilization_data, xml)
+              }
+            }
+          end
+        end.doc
+      end
+
+      def update_target_utilization(request_options, auth_options, utilization_data)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Modify(type: "TargetUtilization") {
+              xml.TargetUtilization {
+                hash_each(utilization_data, xml)
+              }
+            }
+          end
+        end.doc
+      end
+
+      def delete_target_utilization(request_options, auth_options, id)
+        login_elements = Login.elements(auth_options)
+
+        Nokogiri::XML::Builder.new do |xml|
+          xml.request(request_options) do
+            xml.Auth { xml.parent << login_elements }
+            xml.Delete(type: "TargetUtilization") {
+              xml.TargetUtilization {
+                xml.send("id", CGI.escapeHTML(id.to_s))
               }
             }
           end

@@ -17,12 +17,12 @@ Gem::Specification.new do |s|
 
   s.homepage = "http://github.com/micahyoung/openair"
   s.require_paths = ["lib"]
-  s.rubygems_version = "0.0.1"
+  s.rubygems_version = "0.0.2"
   s.summary = "An OpenAir client for Ruby"
 
-  s.add_runtime_dependency("typhoeus", [">= 0.4.2"])
-  s.add_runtime_dependency("nokogiri", [">= 1.5.0"])
-  s.add_runtime_dependency("nori", [">= 2.1.0"])
+  s.add_runtime_dependency("typhoeus", ["~> 0.6.7"])
+  s.add_runtime_dependency("nokogiri", ["~> 1.6.1"])
+  s.add_runtime_dependency("nori", ["~> 2.1.0"])
 
-  s.add_development_dependency("rspec", [">= 2.8.0"])
+  s.add_development_dependency("rspec", ["~> 2.8.0"])
 end

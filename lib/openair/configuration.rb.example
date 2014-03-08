@@ -1,0 +1,9 @@
+OpenAir.configure do
+  reset!
+  api_url     'https://sandbox.openair.com/api.pl'
+  api_key      'API_KEY'
+  company_id   'COMPANY'
+  username     'USERNAME'
+  password     'PASSOWORD'
+  log          'log/openair.log'
+end

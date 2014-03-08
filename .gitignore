@@ -3,3 +3,4 @@ Gemfile.lock
 lib/configuration.rb
 Rakefile
 log*
+tmp/*.log

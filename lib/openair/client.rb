@@ -29,6 +29,15 @@ module OpenAir
       post_request Request::User.request(request_options, auth_options)
     end
 
+    def projects(lower_limit=nil, upper_limit=nil)
+      post_request Request::Project.request(
+        request_options,
+        auth_options,
+        lower_limit,
+        upper_limit
+      )
+    end
+
     def change_user_password(user_id, password)
       request = Request::User.change_password(request_options, auth_options, user_id, password)
       status = post_request(request)["response"]["Modify"]["@status"]

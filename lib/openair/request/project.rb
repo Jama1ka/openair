@@ -5,7 +5,7 @@ module OpenAir::Request
         login_elements = Login.elements(auth_options)
 
         if lower_limit && upper_limit
-          limit = "#{lower_limit},#{upper_limit}"
+          limit = "#{lower_limit}, #{upper_limit}"
         else
           limit = DEFAULT_LIMIT
         end

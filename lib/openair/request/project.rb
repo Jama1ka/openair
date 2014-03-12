@@ -1,11 +1,11 @@
 module OpenAir::Request
   class Project
     class << self
-      def request(request_options, auth_options, lower_limit, upper_limit)
+      def request(request_options, auth_options, start_record, limit)
         login_elements = Login.elements(auth_options)
 
-        if lower_limit && upper_limit
-          limit = "#{lower_limit}, #{upper_limit}"
+        if start_record && limit
+          limit = "#{start_record}, #{limit}"
         else
           limit = DEFAULT_LIMIT
         end

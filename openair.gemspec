@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency("typhoeus", ["~> 0.6.7"])
   s.add_runtime_dependency("nokogiri", ["~> 1.6.1"])
-  s.add_runtime_dependency("nori", ["~> 2.1.0"])
+  s.add_runtime_dependency("nori", ["~> 2.6.0"])
 
   s.add_development_dependency("rspec", ["~> 2.8.0"])
 end
